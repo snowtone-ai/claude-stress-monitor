@@ -141,7 +141,7 @@ This is an early prototype. Known limitations and planned work:
 - [ ] Publish to VS Code Marketplace
 - [ ] Session history / score graph panel
 
-Contributions and feedback welcome via [Issues](https://github.com/chidjiwa/claude-stress-monitor/issues).
+Contributions and feedback welcome via [Issues](https://github.com/snowtone-ai/claude-stress-monitor/issues).
 
 ---
 
