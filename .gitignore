@@ -4,3 +4,6 @@ out/
 *.js.map
 extension.js
 .env
+.env.*
+!.env.example
+.claude/settings.local.json
