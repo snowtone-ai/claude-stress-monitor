@@ -32,11 +32,32 @@ const DEFAULT_STATE: StressState = {
   sessionId: null,
 };
 
+function isStressStatus(value: unknown): value is StressState["status"] {
+  return value === "Calm" || value === "Caution" || value === "Critical";
+}
+
+function isStressState(value: unknown): value is StressState {
+  if (!value || typeof value !== "object") {
+    return false;
+  }
+
+  const candidate = value as Partial<StressState>;
+  return (
+    typeof candidate.score === "number" &&
+    typeof candidate.consecutive === "number" &&
+    isStressStatus(candidate.status) &&
+    (typeof candidate.lastEvent === "string" || candidate.lastEvent === null) &&
+    typeof candidate.lastUpdated === "string" &&
+    (typeof candidate.sessionId === "string" || candidate.sessionId === null)
+  );
+}
+
 // ─── 状態ファイルの読み込み ──────────────────────────────────
 function loadState(): StressState {
   try {
     const raw = fs.readFileSync(STATE_PATH, "utf8");
-    return JSON.parse(raw) as StressState;
+    const parsed: unknown = JSON.parse(raw);
+    return isStressState(parsed) ? parsed : DEFAULT_STATE;
   } catch {
     return DEFAULT_STATE;
   }
@@ -115,8 +136,6 @@ export function activate(context: vscode.ExtensionContext): void {
       watcher.close();
       watcher = null;
     }
-
-    const dir = path.dirname(STATE_PATH);
 
     // ファイルが存在しない場合はディレクトリを監視して待機
     if (!fs.existsSync(STATE_PATH)) {
