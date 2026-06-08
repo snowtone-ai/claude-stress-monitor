@@ -7,3 +7,12 @@ extension.js
 .env.*
 !.env.example
 .claude/settings.local.json
+
+# GCP service account keys
+service-account*.json
+credentials.json
+.mcp.json
+.claude/worktrees/
+.claude/transcripts/
+.claude/cache/
+.codegraph/
